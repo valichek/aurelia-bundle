@@ -10,8 +10,8 @@ System.config({
     "optional": []
   },
   paths: {
-    "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*",
+    "github:*": "https://cdn.rawgit.com/valichek/aurelia-bundle/master/jspm_packages/github/*",
+    "npm:*": "https://cdn.rawgit.com/valichek/aurelia-bundle/master/jspm_packages/npm/*",
     "aurelia-bundle": "https://cdn.rawgit.com/valichek/aurelia-bundle/master/dist/aurelia-bundle"
   },
   bundles: {
