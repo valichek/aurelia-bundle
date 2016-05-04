@@ -21,6 +21,7 @@ import 'aurelia-templating';
 import 'aurelia-templating-binding';
 import 'aurelia-templating-resources';
 import 'aurelia-templating-router';
+import 'aurelia-i18n';
 import 'css';
 import 'fetch';
 import 'text';
