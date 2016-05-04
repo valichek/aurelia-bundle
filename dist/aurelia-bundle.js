@@ -520,6 +520,230 @@ System.registerDynamic("github:systemjs/plugin-css@0.1.21", ["github:systemjs/pl
   return module.exports;
 });
 
+System.registerDynamic("npm:i18next-xhr-backend@0.5.3/dist/commonjs/utils", [], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, "__esModule", {value: true});
+  exports.defaults = defaults;
+  exports.extend = extend;
+  var arr = [];
+  var each = arr.forEach;
+  var slice = arr.slice;
+  function defaults(obj) {
+    each.call(slice.call(arguments, 1), function(source) {
+      if (source) {
+        for (var prop in source) {
+          if (obj[prop] === undefined)
+            obj[prop] = source[prop];
+        }
+      }
+    });
+    return obj;
+  }
+  function extend(obj) {
+    each.call(slice.call(arguments, 1), function(source) {
+      if (source) {
+        for (var prop in source) {
+          obj[prop] = source[prop];
+        }
+      }
+    });
+    return obj;
+  }
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:i18next-xhr-backend@0.5.3/dist/commonjs/index", ["npm:i18next-xhr-backend@0.5.3/dist/commonjs/utils"], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, "__esModule", {value: true});
+  var _createClass = function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor)
+          descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps)
+        defineProperties(Constructor.prototype, protoProps);
+      if (staticProps)
+        defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+    return typeof obj;
+  } : function(obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+  };
+  var _utils = $__require('npm:i18next-xhr-backend@0.5.3/dist/commonjs/utils');
+  var utils = _interopRequireWildcard(_utils);
+  function _interopRequireWildcard(obj) {
+    if (obj && obj.__esModule) {
+      return obj;
+    } else {
+      var newObj = {};
+      if (obj != null) {
+        for (var key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key))
+            newObj[key] = obj[key];
+        }
+      }
+      newObj.default = obj;
+      return newObj;
+    }
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function ajax(url, options, callback, data, cache) {
+    if (data && (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
+      var y = '',
+          e = encodeURIComponent;
+      for (var m in data) {
+        y += '&' + e(m) + '=' + e(data[m]);
+      }
+      data = y.slice(1) + (!cache ? '&_t=' + new Date() : '');
+    }
+    try {
+      var x = new (XMLHttpRequest || ActiveXObject)('MSXML2.XMLHTTP.3.0');
+      x.open(data ? 'POST' : 'GET', url, 1);
+      if (!options.crossDomain) {
+        x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      }
+      x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      x.onreadystatechange = function() {
+        x.readyState > 3 && callback && callback(x.responseText, x);
+      };
+      x.send(data);
+    } catch (e) {
+      window.console && console.log(e);
+    }
+  }
+  ;
+  function getDefaults() {
+    return {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
+      addPath: 'locales/add/{{lng}}/{{ns}}',
+      allowMultiLoading: false,
+      parse: JSON.parse,
+      crossDomain: false,
+      ajax: ajax
+    };
+  }
+  var Backend = function() {
+    function Backend(services) {
+      var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+      _classCallCheck(this, Backend);
+      this.init(services, options);
+      this.type = 'backend';
+    }
+    _createClass(Backend, [{
+      key: 'init',
+      value: function init(services) {
+        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+        this.services = services;
+        this.options = utils.defaults(options, this.options || {}, getDefaults());
+      }
+    }, {
+      key: 'readMulti',
+      value: function readMulti(languages, namespaces, callback) {
+        var url = this.services.interpolator.interpolate(this.options.loadPath, {
+          lng: languages.join('+'),
+          ns: namespaces.join('+')
+        });
+        this.loadUrl(url, callback);
+      }
+    }, {
+      key: 'read',
+      value: function read(language, namespace, callback) {
+        var url = this.services.interpolator.interpolate(this.options.loadPath, {
+          lng: language,
+          ns: namespace
+        });
+        this.loadUrl(url, callback);
+      }
+    }, {
+      key: 'loadUrl',
+      value: function loadUrl(url, callback) {
+        var _this = this;
+        this.options.ajax(url, this.options, function(data, xhr) {
+          var statusCode = xhr.status.toString();
+          if (statusCode.indexOf('5') === 0)
+            return callback('failed loading ' + url, true);
+          if (statusCode.indexOf('4') === 0)
+            return callback('failed loading ' + url, false);
+          var ret = void 0,
+              err = void 0;
+          try {
+            ret = _this.options.parse(data);
+          } catch (e) {
+            err = 'failed parsing ' + url + ' to json';
+          }
+          if (err)
+            return callback(err, false);
+          callback(null, ret);
+        });
+      }
+    }, {
+      key: 'create',
+      value: function create(languages, namespace, key, fallbackValue) {
+        var _this2 = this;
+        if (typeof languages === 'string')
+          languages = [languages];
+        var payload = {};
+        payload[key] = fallbackValue || '';
+        languages.forEach(function(lng) {
+          var url = _this2.services.interpolator.interpolate(_this2.options.addPath, {
+            lng: lng,
+            ns: namespace
+          });
+          _this2.options.ajax(url, _this2.options, function(data, xhr) {}, payload);
+        });
+      }
+    }]);
+    return Backend;
+  }();
+  Backend.type = 'backend';
+  exports.default = Backend;
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:i18next-xhr-backend@0.5.3/index", ["npm:i18next-xhr-backend@0.5.3/dist/commonjs/index"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = $__require('npm:i18next-xhr-backend@0.5.3/dist/commonjs/index').default;
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:i18next-xhr-backend@0.5.3", ["npm:i18next-xhr-backend@0.5.3/index"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = $__require('npm:i18next-xhr-backend@0.5.3/index');
+  global.define = __define;
+  return module.exports;
+});
+
 (function() {
 var _removeDefine = System.get("@@amd-helpers").createDefine();
 define("npm:aurelia-i18n@0.5.2/base-i18n", ["exports", "npm:aurelia-i18n@0.5.2/i18n", "npm:aurelia-event-aggregator@1.0.0-beta.1.2.0"], function(exports, _i18n, _aureliaEventAggregator) {
@@ -21301,9 +21525,9 @@ define("npm:aurelia-binding@1.0.0-beta.1.3.3", ["npm:aurelia-binding@1.0.0-beta.
 _removeDefine();
 })();
 'use strict';
-System.register("dist/zzzz.js", ["npm:aurelia-binding@1.0.0-beta.1.3.3", "npm:aurelia-bootstrapper@1.0.0-beta.1.2.0", "npm:aurelia-dependency-injection@1.0.0-beta.1.2.2", "npm:aurelia-event-aggregator@1.0.0-beta.1.2.0", "npm:aurelia-fetch-client@1.0.0-beta.1.2.3", "npm:aurelia-framework@1.0.0-beta.1.2.2", "npm:aurelia-history@1.0.0-beta.1.2.0", "npm:aurelia-history-browser@1.0.0-beta.1.2.0", "npm:aurelia-http-client@1.0.0-beta.1.2.0", "npm:aurelia-loader@1.0.0-beta.1.2.0", "npm:aurelia-loader-default@1.0.0-beta.1.2.1", "npm:aurelia-logging@1.0.0-beta.1.2.0", "npm:aurelia-logging-console@1.0.0-beta.1.2.0", "npm:aurelia-metadata@1.0.0-beta.1.2.0", "npm:aurelia-path@1.0.0-beta.1.2.1", "npm:aurelia-polyfills@1.0.0-beta.1.1.3", "npm:aurelia-route-recognizer@1.0.0-beta.1.2.0", "npm:aurelia-router@1.0.0-beta.1.2.1", "npm:aurelia-task-queue@1.0.0-beta.1.2.0", "npm:aurelia-templating@1.0.0-beta.1.2.4", "npm:aurelia-templating-binding@1.0.0-beta.1.2.2", "npm:aurelia-templating-resources@1.0.0-beta.1.2.3", "npm:aurelia-templating-router@1.0.0-beta.1.2.0", "npm:aurelia-i18n@0.5.2", "github:systemjs/plugin-css@0.1.21", "github:github/fetch@1.0.0", "github:systemjs/plugin-text@0.0.8"], function(_export, _context) {
+System.register("dist/zzzz.js", ["npm:aurelia-binding@1.0.0-beta.1.3.3", "npm:aurelia-bootstrapper@1.0.0-beta.1.2.0", "npm:aurelia-dependency-injection@1.0.0-beta.1.2.2", "npm:aurelia-event-aggregator@1.0.0-beta.1.2.0", "npm:aurelia-fetch-client@1.0.0-beta.1.2.3", "npm:aurelia-framework@1.0.0-beta.1.2.2", "npm:aurelia-history@1.0.0-beta.1.2.0", "npm:aurelia-history-browser@1.0.0-beta.1.2.0", "npm:aurelia-http-client@1.0.0-beta.1.2.0", "npm:aurelia-loader@1.0.0-beta.1.2.0", "npm:aurelia-loader-default@1.0.0-beta.1.2.1", "npm:aurelia-logging@1.0.0-beta.1.2.0", "npm:aurelia-logging-console@1.0.0-beta.1.2.0", "npm:aurelia-metadata@1.0.0-beta.1.2.0", "npm:aurelia-path@1.0.0-beta.1.2.1", "npm:aurelia-polyfills@1.0.0-beta.1.1.3", "npm:aurelia-route-recognizer@1.0.0-beta.1.2.0", "npm:aurelia-router@1.0.0-beta.1.2.1", "npm:aurelia-task-queue@1.0.0-beta.1.2.0", "npm:aurelia-templating@1.0.0-beta.1.2.4", "npm:aurelia-templating-binding@1.0.0-beta.1.2.2", "npm:aurelia-templating-resources@1.0.0-beta.1.2.3", "npm:aurelia-templating-router@1.0.0-beta.1.2.0", "npm:aurelia-i18n@0.5.2", "npm:i18next-xhr-backend@0.5.3", "github:systemjs/plugin-css@0.1.21", "github:github/fetch@1.0.0", "github:systemjs/plugin-text@0.0.8"], function(_export, _context) {
   return {
-    setters: [function(_aureliaBinding) {}, function(_aureliaBootstrapper) {}, function(_aureliaDependencyInjection) {}, function(_aureliaEventAggregator) {}, function(_aureliaFetchClient) {}, function(_aureliaFramework) {}, function(_aureliaHistory) {}, function(_aureliaHistoryBrowser) {}, function(_aureliaHttpClient) {}, function(_aureliaLoader) {}, function(_aureliaLoaderDefault) {}, function(_aureliaLogging) {}, function(_aureliaLoggingConsole) {}, function(_aureliaMetadata) {}, function(_aureliaPath) {}, function(_aureliaPolyfills) {}, function(_aureliaRouteRecognizer) {}, function(_aureliaRouter) {}, function(_aureliaTaskQueue) {}, function(_aureliaTemplating) {}, function(_aureliaTemplatingBinding) {}, function(_aureliaTemplatingResources) {}, function(_aureliaTemplatingRouter) {}, function(_aureliaI18n) {}, function(_css) {}, function(_fetch) {}, function(_text) {}],
+    setters: [function(_aureliaBinding) {}, function(_aureliaBootstrapper) {}, function(_aureliaDependencyInjection) {}, function(_aureliaEventAggregator) {}, function(_aureliaFetchClient) {}, function(_aureliaFramework) {}, function(_aureliaHistory) {}, function(_aureliaHistoryBrowser) {}, function(_aureliaHttpClient) {}, function(_aureliaLoader) {}, function(_aureliaLoaderDefault) {}, function(_aureliaLogging) {}, function(_aureliaLoggingConsole) {}, function(_aureliaMetadata) {}, function(_aureliaPath) {}, function(_aureliaPolyfills) {}, function(_aureliaRouteRecognizer) {}, function(_aureliaRouter) {}, function(_aureliaTaskQueue) {}, function(_aureliaTemplating) {}, function(_aureliaTemplatingBinding) {}, function(_aureliaTemplatingResources) {}, function(_aureliaTemplatingRouter) {}, function(_aureliaI18n) {}, function(_i18nextXhrBackend) {}, function(_css) {}, function(_fetch) {}, function(_text) {}],
     execute: function() {}
   };
 });

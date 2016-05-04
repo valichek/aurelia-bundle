@@ -22,6 +22,7 @@ import 'aurelia-templating-binding';
 import 'aurelia-templating-resources';
 import 'aurelia-templating-router';
 import 'aurelia-i18n';
+import 'i18next-xhr-backend';
 import 'css';
 import 'fetch';
 import 'text';

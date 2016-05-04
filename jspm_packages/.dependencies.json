@@ -209,5 +209,6 @@
   },
   "npm:i18next@2.5.1": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "npm:i18next-xhr-backend@0.5.3": {}
 }
