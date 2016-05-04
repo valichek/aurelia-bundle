@@ -12,7 +12,7 @@ System.config({
   paths: {
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*",
-    "aurelia-bundle": "https://cdn.rawgit.com/jdanyow/aurelia-bundle/v1.0.4/dist/aurelia-bundle"
+    "aurelia-bundle": "https://cdn.rawgit.com/valichek/aurelia-bundle/master/dist/aurelia-bundle"
   },
   bundles: {
     "dist/aurelia-bundle.js": [
