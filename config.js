@@ -12,10 +12,10 @@ System.config({
   paths: {
     "github:*": "https://cdn.rawgit.com/valichek/aurelia-bundle/master/jspm_packages/github/*",
     "npm:*": "https://cdn.rawgit.com/valichek/aurelia-bundle/master/jspm_packages/npm/*",
-    "dist/aurelia-bundle": "https://cdn.rawgit.com/valichek/aurelia-bundle/master/dist/aurelia-bundle"
+    "aurelia-bundle": "https://cdn.rawgit.com/valichek/aurelia-bundle/master/dist/aurelia-bundle"
   },
   bundles: {
-    "dist/aurelia-bundle.js": [
+    "aurelia-bundle.js": [
       "dist/zzzz.js",
       "npm:aurelia-fetch-client@1.0.0-beta.1.2.3",
       "npm:aurelia-binding@1.0.0-beta.1.3.3",
