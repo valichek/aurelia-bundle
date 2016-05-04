@@ -10,9 +10,9 @@ System.config({
     "optional": []
   },
   paths: {
-    "github:*": "https://cdn.rawgit.com/valichek/aurelia-bundle/i18n-0.5.2v0.0.1/jspm_packages/github/*",
-    "npm:*": "https://cdn.rawgit.com/valichek/aurelia-bundle/i18n-0.5.2v0.0.1/jspm_packages/npm/*",
-    "aurelia-bundle": "https://cdn.rawgit.com/valichek/aurelia-bundle/i18n-0.5.2v0.0.1/dist/aurelia-bundle"
+    "github:*": "https://cdn.rawgit.com/valichek/aurelia-bundle/i18n-0.5.2v0.0.3/jspm_packages/github/*",
+    "npm:*": "https://cdn.rawgit.com/valichek/aurelia-bundle/i18n-0.5.2v0.0.3/jspm_packages/npm/*",
+    "aurelia-bundle": "https://cdn.rawgit.com/valichek/aurelia-bundle/i18n-0.5.2v0.0.3/dist/aurelia-bundle"
   },
   bundles: {
     "aurelia-bundle": [
